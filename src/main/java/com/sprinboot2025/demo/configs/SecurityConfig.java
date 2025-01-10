@@ -30,6 +30,7 @@ public class SecurityConfig {
                         .authenticated()
                         .requestMatchers("/admin/**")
                         .hasRole("ADMIN")
+//                        .requestMatchers("\"/weather\", \"/css/**\", \"/js/**\", \"/images/**\"").permitAll()
                         .anyRequest()
                         .permitAll()
                 )

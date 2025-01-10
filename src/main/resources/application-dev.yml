@@ -5,3 +5,9 @@ spring:
       database: journaldb
   main:
     allow-bean-definition-overriding: true
+#mvc:
+#  static-path-pattern: /static/**
+server:
+  port: 8080 # Optional: Define the server port
+
+
