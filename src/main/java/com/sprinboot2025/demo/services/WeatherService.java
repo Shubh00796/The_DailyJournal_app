@@ -4,6 +4,7 @@
     import lombok.extern.slf4j.Slf4j;
     import org.slf4j.Logger;
     import org.slf4j.LoggerFactory;
+    import org.springframework.http.HttpStatusCode;
     import org.springframework.stereotype.Service;
     import org.springframework.web.reactive.function.client.WebClient;
     import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -12,7 +13,6 @@
     @Service
     public class WeatherService {
 
-        private static final Logger logger = LoggerFactory.getLogger(WeatherService.class);
 
         private static final String API_KEY = "babea779fae4b4fd9793e4e377b82cb8";
         private static final String BASE_URL = "https://api.weatherstack.com/current";
@@ -32,11 +32,11 @@
                                 .build())
                         .retrieve()
                         .onStatus(
-                                status -> status.is4xxClientError(),
+                                HttpStatusCode::is4xxClientError,
                                 response -> Mono.error(new RuntimeException("Client error: " + response.statusCode()))
                         )
                         .onStatus(
-                                status -> status.is5xxServerError(),
+                                HttpStatusCode::is5xxServerError,
                                 response -> Mono.error(new RuntimeException("Server error: " + response.statusCode()))
                         )
                         .bodyToMono(String.class)
@@ -49,5 +49,4 @@
                 return "Error fetching weather data: " + e.getMessage();
             }
         }
-      private JsonNode
     }
