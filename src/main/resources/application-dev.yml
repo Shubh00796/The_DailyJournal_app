@@ -1,0 +1,7 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://shubhamdongare9696:Shubham%40007@cluster0.xearc.mongodb.net/journaldb?retryWrites=true&w=majority
+      database: journaldb
+  main:
+    allow-bean-definition-overriding: true

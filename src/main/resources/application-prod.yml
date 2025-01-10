@@ -1,0 +1,8 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://shubhamdongare9696:Shubham%40007@cluster0.xearc.mongodb.net/?retryWrites=true&w=majority&ssl=true&appName=Cluster0
+      database: journaldb
+      auto-index-creation: true
+  main:
+    allow-bean-definition-overriding: true
