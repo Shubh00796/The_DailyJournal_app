@@ -1,6 +1,7 @@
 package com.sprinboot2025.demo.controller;
 
 import com.sprinboot2025.demo.services.JsonPlaceholderService;
+import com.sprinboot2025.demo.utility.Comments;
 import com.sprinboot2025.demo.utility.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,13 @@ public class JsonPlaceholderController {
                 .map(response -> ResponseEntity.ok("Post created successfully: " + response))
                 .onErrorResume(e -> Mono.just(ResponseEntity.status(500).body("Error creating post: " + e.getMessage())));
     }
+
+    @PostMapping("/create-comments")
+        public Mono<ResponseEntity<String>> createComments(@RequestBody Comments comments){
+        return jsonPlaceholderService.createComments(comments)
+                .map(response -> ResponseEntity.ok("Post created successfully: " + response))
+                .onErrorResume(e -> Mono.just(ResponseEntity.status(500).body("Error creating post: " + e.getMessage())));
+        }
 
     @GetMapping("/comments")
     public Mono<String> getComments() {

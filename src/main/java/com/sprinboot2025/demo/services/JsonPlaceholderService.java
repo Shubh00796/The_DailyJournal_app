@@ -1,5 +1,6 @@
 package com.sprinboot2025.demo.services;
 
+import com.sprinboot2025.demo.utility.Comments;
 import com.sprinboot2025.demo.utility.Post;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -78,6 +79,26 @@ public class JsonPlaceholderService {
                     .bodyToMono(String.class)
                     .doOnError(e -> log.error("Error occurred while creating post: {}", e.getMessage(), e)); // Log error
 
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public Mono<String> createComments(Comments comments){
+        try {
+            return  webClient.post()
+                    .uri(BASE_URL + "/comments")
+                    .bodyValue(comments)
+                    .retrieve()
+                    .onStatus(
+                            HttpStatusCode::is4xxClientError,
+                            response -> Mono.error(new RuntimeException("Client error: " + response.statusCode()))
+                    )
+                    .onStatus(
+                            HttpStatusCode::is5xxServerError,
+                            response -> Mono.error(new RuntimeException("Server error: " + response.statusCode()))
+                    )
+                    .bodyToMono(String.class)
+                    .doOnError(e -> log.error("Error occurred while fetching posts: {}", e.getMessage(), e)); // Log error
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
