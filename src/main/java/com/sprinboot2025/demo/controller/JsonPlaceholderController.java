@@ -34,4 +34,14 @@ public class JsonPlaceholderController {
                 .map(response -> ResponseEntity.ok("Post created successfully: " + response))
                 .onErrorResume(e -> Mono.just(ResponseEntity.status(500).body("Error creating post: " + e.getMessage())));
     }
+
+    @GetMapping("/comments")
+    public Mono<String> getComments() {
+        return jsonPlaceholderService.getComments();
+    }
+
+    @GetMapping("/comments/{id}")
+    public Mono<String> getCommentsById(@PathVariable int id) {
+        return jsonPlaceholderService.getCommentsByID(id);
+    }
 }

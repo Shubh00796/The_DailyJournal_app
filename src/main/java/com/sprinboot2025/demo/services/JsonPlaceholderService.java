@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 @Component
 @Slf4j
 public class JsonPlaceholderService {
-//    private static final Logger logger = LoggerFactory.getLogger(JsonPlaceholderService.class);
+    //    private static final Logger logger = LoggerFactory.getLogger(JsonPlaceholderService.class);
     private static final String BASE_URL = "https://jsonplaceholder.typicode.com"; // Correct base URL
 
     private final WebClient webClient;
@@ -83,4 +83,44 @@ public class JsonPlaceholderService {
         }
     }
 
+    public Mono<String> getComments() {
+        try {
+            return webClient.get()
+                    .uri(BASE_URL + "/comments")
+                    .retrieve()
+                    .onStatus(
+                            HttpStatusCode::is4xxClientError,
+                            response -> Mono.error(new RuntimeException("Client error: " + response.statusCode()))
+                    )
+                    .onStatus(
+                            HttpStatusCode::is5xxServerError,
+                            response -> Mono.error(new RuntimeException("Server error: " + response.statusCode()))
+                    )
+                    .bodyToMono(String.class)
+                    .doOnError(e -> log.error("Error occurred while fetching posts: {}", e.getMessage(), e)); // Log error
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Mono<String> getCommentsByID(int id) {
+        try {
+            return webClient.get()
+                    .uri(BASE_URL + "/comments/{id}", id)
+                    .retrieve()
+                    .onStatus(
+                            HttpStatusCode::is4xxClientError,
+                            response -> Mono.error(new RuntimeException("Client error: " + response.statusCode()))
+                    )
+                    .onStatus(
+                            HttpStatusCode::is5xxServerError,
+                            response -> Mono.error(new RuntimeException("Server error: " + response.statusCode()))
+                    )
+                    .bodyToMono(String.class)
+                    .doOnError(e -> log.error("Error occurred while fetching posts: {}", e.getMessage(), e)); // Log error
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
