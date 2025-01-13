@@ -5,6 +5,12 @@ spring:
       database: journaldb
   main:
     allow-bean-definition-overriding: true
+
+elevenlabs:
+  api:
+    base-url: https://api.elevenlabs.io/v1
+    key: sk_bb91dc6db9bee055e0d4ee1c5a5de51d6ddada36bc3c70bc
+
 #mvc:
 #  static-path-pattern: /static/**
 server:
