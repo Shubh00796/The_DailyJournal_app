@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sprinboot2025.demo.cache.AppCache;
 import com.sprinboot2025.demo.utility.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.*;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,22 +15,31 @@ import java.io.IOException;
 
 @Slf4j
 @Service
-public class CricketDataService {
+public class CricketDataServiceByAppicationCache {
+
+    @Autowired
+    private AppCache appCache;
 
 
-    private static final String API_KEY = "0c67145834msh4a2b63262809f7dp19e401jsnf653d91eb538";
+//    private static final String API_KEY = "0c67145834msh4a2b63262809f7dp19e401jsnf653d91eb538";
     private static final String API_HOST = "cricket-live-data.p.rapidapi.com";
     private static final String BASE_URL = "https://" + API_HOST;
 
     private final OkHttpClient httpClient;
 
-    public CricketDataService() {
+    public CricketDataServiceByAppicationCache() {
         this.httpClient = new OkHttpClient.Builder()
                 .callTimeout(java.time.Duration.ofSeconds(30)) // Set timeout
                 .build();
     }
 
     public ApiResponse getSeriesData() {
+
+        String apiKey = appCache.APP_CACHE.get("cricket_api");
+        if (apiKey == null || apiKey.isEmpty()) {
+            log.error("API key is not available in the cache");
+            throw new RuntimeException("API key not found in cache");
+        }
         // Construct the URL
         HttpUrl url = HttpUrl.parse(BASE_URL + "/series")
                 .newBuilder()
@@ -37,10 +49,11 @@ public class CricketDataService {
         // Build the request
         Request request = new Request.Builder()
                 .url(url)
-                .addHeader("X-RapidAPI-Key", API_KEY)
+                .addHeader("X-RapidAPI-Key", apiKey) // Use the cached API key
                 .addHeader("X-RapidAPI-Host", API_HOST)
                 .get()
                 .build();
+
 
         try (Response response = httpClient.newCall(request).execute()) {
             if (!response.isSuccessful()) {

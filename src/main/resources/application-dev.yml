@@ -4,7 +4,6 @@ spring:
       uri: mongodb+srv://shubhamdongare9696:Shubham%40007@cluster0.xearc.mongodb.net/journaldb?retryWrites=true&w=majority
       database: journaldb
 
-
 elevenlabs:
   api:
     base-url: https://api.elevenlabs.io/v1
@@ -13,9 +12,9 @@ elevenlabs:
 webflux:
   max-in-memory-size: 32MB
 
-#mvc:
-#  static-path-pattern: /static/**
+weather:
+  api:
+    key: babea779fae4b4fd9793e4e377b82cb8
+    base-url: https://api.weatherstack.com
 server:
-  port: 8080 # Optional: Define the server port
-
-
+  port: 8080
