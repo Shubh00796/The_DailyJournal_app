@@ -11,6 +11,9 @@ elevenlabs:
     base-url: https://api.elevenlabs.io/v1
     key: sk_bb91dc6db9bee055e0d4ee1c5a5de51d6ddada36bc3c70bc
 
+webflux:
+    max-in-memory-size: 10MB
+
 #mvc:
 #  static-path-pattern: /static/**
 server:
