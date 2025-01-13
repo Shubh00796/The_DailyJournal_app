@@ -3,8 +3,7 @@ spring:
     mongodb:
       uri: mongodb+srv://shubhamdongare9696:Shubham%40007@cluster0.xearc.mongodb.net/journaldb?retryWrites=true&w=majority
       database: journaldb
-  main:
-    allow-bean-definition-overriding: true
+
 
 elevenlabs:
   api:
@@ -12,7 +11,7 @@ elevenlabs:
     key: sk_bb91dc6db9bee055e0d4ee1c5a5de51d6ddada36bc3c70bc
 
 webflux:
-    max-in-memory-size: 10MB
+  max-in-memory-size: 32MB
 
 #mvc:
 #  static-path-pattern: /static/**
